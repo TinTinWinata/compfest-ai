@@ -1,13 +1,13 @@
 This message will be written to a file.
-Accuracy score of Random Forest Classifier : 87.49
+Accuracy score of Random Forest Classifier : 99.39
 Classification_report :               precision    recall  f1-score   support
 
-         0.0       0.93      0.81      0.87     31886
-         1.0       0.83      0.94      0.88     32103
+           0       1.00      0.99      0.99       790
+           1       0.99      1.00      0.99       850
 
-    accuracy                           0.87     63989
-   macro avg       0.88      0.87      0.87     63989
-weighted avg       0.88      0.87      0.87     63989
+    accuracy                           0.99      1640
+   macro avg       0.99      0.99      0.99      1640
+weighted avg       0.99      0.99      0.99      1640
 
-Mean squared error : 0.1250527434402788
-Root mean squared error : 0.35362797321518386
+Mean squared error : 0.006097560975609756
+Root mean squared error : 0.07808688094430304

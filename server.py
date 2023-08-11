@@ -22,7 +22,7 @@ stroke_model = StrokeModel()
 
 @app.route('/diabetes', methods=['POST'])
 @cross_origin()
-def predict():
+def predict_diabetes():
     data = request.get_json()
     features = [
         'high_bp', 'high_chol', 'chol_check', 'bmi', 'smoker', 'stroke',
@@ -50,7 +50,7 @@ def predict():
 
 @app.route('/stroke', methods=['POST'])
 @cross_origin()
-def predict():
+def predict_stroke():
     data = request.get_json()
 
     features = [
