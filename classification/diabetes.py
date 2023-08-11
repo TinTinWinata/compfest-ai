@@ -16,6 +16,7 @@ from sklearn.model_selection import train_test_split
 
 class DiabetesModel:
     def __init__(self):
+
         self.check_model_exist()
         pass
 
