@@ -1,0 +1,14 @@
+This message will be written to a file.
+Algorithm : Random Forest Classifier
+Accuracy : 99.1
+Classification_report :               precision    recall  f1-score   support
+
+           0       1.00      0.98      0.99       947
+           1       0.98      1.00      0.99       933
+
+    accuracy                           0.99      1880
+   macro avg       0.99      0.99      0.99      1880
+weighted avg       0.99      0.99      0.99      1880
+
+Mean squared error : 0.009042553191489361
+Root mean squared error : 0.09509234034079381

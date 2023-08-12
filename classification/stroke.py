@@ -18,9 +18,10 @@ from sklearn.utils import resample
 
 class StrokeModel:
     def __init__(self):
-
+        print('Building Stroke Model...')
         self.check_model_exist()
         pass
+        print('Stroke Model [Done]')
 
     def check_model_exist(self):
         path = './model/stroke.joblib'
@@ -60,28 +61,19 @@ class StrokeModel:
         # Drop Unused Columns
         self.df.drop(['id'], axis=1, inplace=True)
 
-
         # Drop Duplicate Values
         self.df.drop_duplicates(inplace=True)
-
-        # Initialize Label Encoder
-        label_encoder = LabelEncoder()
-
-        # Encode categorical
-        # categorical_columns = ['gender', 'ever_married', 'work_type', 'Residence_type', 'smoking_status']
-        # for col in categorical_columns:
-        # self.df[col] = label_encoder.fit_transform(self.df[col])
 
         # Custom Encoding
         gender_mapping = {'Male': 0, 'Female': 1, 'Other': 2}
         ever_married_mapping = {'No': 0, 'Yes': 1}
-        work_type_mapping = {'children': 0, 'Govt_jov': 1, 'Never_worked': 2, 'Private': 3 , 'Self-employed': 4}
+        work_type_mapping = {'children': 0, 'Govt_job': 1, 'Never_worked': 2, 'Private': 3 , 'Self-employed': 4}
         residence_type_mapping = {'Rural': 0, 'Urban': 1}
         smoking_status_mapping = {'formerly smoked': 3, 'never smoked': 2, 'smokes': 1, 'Unknown': 0}
 
         self.map_categorical('gender', gender_mapping, ['Male', 'Female', 'Other'])
         self.map_categorical('ever_married', ever_married_mapping, ['No', 'Yes'])
-        self.map_categorical('work_type', work_type_mapping, ['children', 'Govt_jov', 'Never_worked', 'Self-employed'])
+        self.map_categorical('work_type', work_type_mapping, ['children', 'Govt_job', 'Never_worked', 'Self-employed', 'Private'])
         self.map_categorical('residence_type', residence_type_mapping, ['Rural', 'Urban'])
         self.map_categorical('smoking_status', smoking_status_mapping, ['formerly smoked', 'never smoked', 'smokes', 'Unknown'])
 
@@ -133,11 +125,12 @@ class StrokeModel:
                                         show_normed=True,
                                         colorbar=True)
 
-        plt.savefig('confusion_matrix.jpg')
+        plt.savefig('report/stroke-confusion.jpg')
 
         self.classification_report(y_test, predictions)
 
     def classification_report(self, y_test, predictions):
+        
         # acc
         acc = accuracy_score(y_test, predictions)
 
@@ -150,9 +143,10 @@ class StrokeModel:
         # calculating the rmse
         rmse = math.sqrt(mse)
 
-        with open('report.txt', 'w') as f:
+        with open('report/stroke.txt', 'w') as f:
             f.write("This message will be written to a file.")
-            f.write('\nAccuracy score of Random Forest Classifier : ' +
+            f.write('\nAlgorithm : Random Forest Classifier')
+            f.write('\nAccuracy : ' +
                     str(round(acc*100, 2)))
             f.write('\nClassification_report : ')
             f.write(classificationreport)
