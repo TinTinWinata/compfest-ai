@@ -34,6 +34,7 @@ class Model:
         self.path = f'./model/{name}.joblib'
         self.dataset = f'./dataset/{name}.csv'
         self.report = f'./report/{name}.txt'
+        self.scalar_path = f'./model/${name}-scalar.joblib'
         self.confusion = f'./report/{name}-confusion.jpg'
         self.check_model_exist()
         # self.print_df()
@@ -100,16 +101,15 @@ class Model:
         # Split features and labels
         X = self.df.drop(self.result_name, axis=1)
         y = self.df[[self.result_name]]
-
-        print(X)
-
+        
         # Feature Scaling
-        scaler = StandardScaler()
-        X = scaler.fit_transform(X)
+        self.scalar = StandardScaler()
+        X = self.scalar.fit_transform(X)
 
         # Split into train and test
         X_train, X_test, y_train, y_test = train_test_split(
             X, y, test_size=0.2, random_state=10)
+        
 
         return X_train, X_test, y_train, y_test
 
@@ -131,12 +131,23 @@ class Model:
 
         plt.savefig(self.confusion)
 
+        # test set results
+
+        y_pred = self.model.predict(X_test)
+        y_pred = np.array(y_pred)
+        X_test = np.array(X_test)
+        pd.set_option('display.max_columns', None)
+        pd.set_option('display.max_rows', None)
+        # print('Test : ', np.concatenate((y_pred.reshape(len(y_pred),1), X_test.reshape(len(X_test),len(X_test[0]))),1))
+
         self.classification_report(y_test, predictions)
 
     def classification_report(self, y_test, predictions):
         
         # acc
         acc = accuracy_score(y_test, predictions)
+
+
 
         # calculating the classification report
         classificationreport = classification_report(y_test, predictions)
@@ -162,8 +173,11 @@ class Model:
 
     def save_model(self):
         joblib.dump(self.model, self.path, compress=3)
+        joblib.dump(self.scalar, self.scalar_path, compress=3)
 
     def predict(self,data):
         data = pd.DataFrame(data)
+        scaler = joblib.load(self.scalar_path)
+        data = scaler.transform(data)
         prediction = self.model.predict(data)
         return prediction

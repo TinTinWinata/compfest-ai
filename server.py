@@ -32,7 +32,6 @@ def make_route(name, features, model):
     @cross_origin()
     def predict():
         data = request.get_json()
-
         missing_feature = [feature for feature in features if feature not in data]
         if missing_feature:
             abort(
