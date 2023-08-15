@@ -4,6 +4,7 @@ import cv2
 from flask import *
 from flask_cors import CORS, cross_origin
 
+from classification.ann_model import ANN_Model
 from classification.diabetes import DiabetesModel
 from classification.model import CategoricalMapping, Model
 from classification.stroke import StrokeModel
@@ -23,7 +24,7 @@ cv2.ocl.setUseOpenCL(False)
 coronary_name = 'coronary'
 coronary_map = []
 coronary_map.append(CategoricalMapping({'Present': 0, 'Absent': 1}, 'famhist'))
-coronary_model = Model(coronary_name, "chd", coronary_map, [])
+coronary_model = ANN_Model(coronary_name, "chd", coronary_map, [])
 
 # Method to make a prediction route
 

@@ -1,6 +1,7 @@
 import math
 import os
 import warnings
+from datetime import datetime
 from typing import List
 
 import joblib
@@ -15,7 +16,8 @@ from sklearn.metrics import (accuracy_score, classification_report,
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.utils import resample
-from tensorflow.keras.models import Sequential
+from tensorflow.python.keras.layers import Dense
+from tensorflow.python.keras.models import Sequential, load_model
 
 
 class CategoricalMapping:
@@ -34,13 +36,12 @@ class ANN_Model:
         self.map_list: List[CategoricalMapping] = map_list
         self.result_name: str = result_name
         self.name: str = name
-        self.path = f'./model/{name}.joblib'
+        self.path = f'./model/{name}-ann.h5'
         self.dataset = f'./dataset/{name}.csv'
-        self.report = f'./report/{name}.txt'
-        self.scalar_path = f'./model/${name}-scalar.joblib'
-        self.confusion = f'./report/{name}-confusion.jpg'
+        self.report = f'./report/{name}-ann.txt'
+        self.scalar_path = f'./model/{name}-ann-scalar.joblib'
+        self.confusion = f'./report/{name}-ann-confusion.jpg'
         self.check_model_exist()
-        # self.print_df()
         print(f'{name.title()} Model [Done]')
         pass
 
@@ -116,18 +117,37 @@ class ANN_Model:
 
     def build_model(self):
         # Initiate Sequntial model
-        self.model = tf.keras.models.Sequential()
+        self.model = Sequential()
 
-        # First Layer
-        # self.model()
+        # First Layer or Input
+        self.model.add(Dense(units=6, activation='relu'))
+
+        # Second Layer
+        self.model.add(Dense(units=6, activation='relu'))
+
+        self.model.add(Dense(units=6, activation='relu'))
+
+        self.model.add(Dense(units=6, activation='relu'))
+
+        self.model.add(Dense(units=6, activation='relu'))
+
+        # Output Layer
+        self.model.add(Dense(units=1, activation='sigmoid'))
 
         X_train, X_test, y_train, y_test = self.split_dataset()
 
-        self.model.fit(X_train, y_train.values.ravel())
+        # Compiling Artificial Neural Networks
+        self.model.compile(optimizer ='adam', loss='binary_crossentropy', metrics = ['accuracy']) 
 
+        # Training Dataset
+        self.model.fit(X_train, y_train, batch_size = 32, epochs = 9999)
+
+        # Predicft
         predictions = self.model.predict(X_test)
 
-        cm = confusion_matrix(y_test, predictions)
+        binary_predictions = np.round(predictions) 
+
+        cm = confusion_matrix(y_test, binary_predictions)
 
         fig, ax = plot_confusion_matrix(conf_mat=cm, show_absolute=True,
                                         show_normed=True,
@@ -135,46 +155,49 @@ class ANN_Model:
 
         plt.savefig(self.confusion)
 
-        # test set results
+        # Test set results
 
         y_pred = self.model.predict(X_test)
         y_pred = np.array(y_pred)
         X_test = np.array(X_test)
         pd.set_option('display.max_columns', None)
         pd.set_option('display.max_rows', None)
-        # print('Test : ', np.concatenate((y_pred.reshape(len(y_pred),1), X_test.reshape(len(X_test),len(X_test[0]))),1))
 
-        self.classification_report(y_test, predictions)
+        self.classification_report(y_test, binary_predictions)
 
-    def classification_report(self, y_test, predictions):
+    def classification_report(self, y_test, binary_pred):
 
         # acc
-        acc = accuracy_score(y_test, predictions)
+        acc = accuracy_score(y_test, binary_pred)
 
         # calculating the classification report
-        classificationreport = classification_report(y_test, predictions)
+        classificationreport = classification_report(y_test, binary_pred)
 
         # calculating the mse
-        mse = mean_squared_error(y_test, predictions)
+        mse = mean_squared_error(y_test, binary_pred)
 
         # calculating the rmse
         rmse = math.sqrt(mse)
 
+        current_datetime = datetime.now()
+        current_time = current_datetime.strftime('%Y-%m-%d %H:%M:%S')
+
         with open(self.report, 'w') as f:
             f.write(f"--- {self.name.title()} Prediction ---")
-            f.write('\nAlgorithm : Random Forest Classifier')
+            f.write('\nAlgorithm : Artificial Neural Network')
             f.write('\nAccuracy : ' +
                     str(round(acc*100, 2)))
             f.write('\nClassification_report : ')
             f.write(classificationreport)
             f.write('\nMean squared error : ' + str(mse))
             f.write('\nRoot mean squared error : ' + str(rmse))
+            f.write('\nDate : ' + current_time)
 
     def load_model(self):
-        self.model = joblib.load(self.path)
+        self.model = load_model(self.path)
 
     def save_model(self):
-        joblib.dump(self.model, self.path, compress=3)
+        self.model.save(self.path)
         joblib.dump(self.scalar, self.scalar_path, compress=3)
 
     def predict(self, data):
