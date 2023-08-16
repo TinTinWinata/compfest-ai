@@ -140,7 +140,7 @@ class ANN_Model:
         self.model.compile(optimizer ='adam', loss='binary_crossentropy', metrics = ['accuracy']) 
 
         # Training Dataset
-        self.model.fit(X_train, y_train, batch_size = 32, epochs = 9999)
+        self.model.fit(X_train, y_train, batch_size = 32, epochs = 100)
 
         # Predicft
         predictions = self.model.predict(X_test)
