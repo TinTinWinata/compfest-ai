@@ -1,0 +1,15 @@
+--- Diabetes Prediction ---
+Algorithm : Artificial Neural Network
+Accuracy : 73.9
+Classification_report :               precision    recall  f1-score   support
+
+         0.0       0.78      0.66      0.72     38705
+         1.0       0.71      0.82      0.76     39046
+
+    accuracy                           0.74     77751
+   macro avg       0.75      0.74      0.74     77751
+weighted avg       0.74      0.74      0.74     77751
+
+Mean squared error : 0.2609869969518077
+Root mean squared error : 0.5108688647312613
+Date : 2023-08-17 00:31:30

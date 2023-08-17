@@ -5,6 +5,7 @@ from flask import *
 from flask_cors import CORS, cross_origin
 
 from classification.ann_model import ANN_Model
+from classification.dcnn_model import DCNN_Model
 from classification.diabetes import DiabetesModel
 from classification.model import CategoricalMapping, Model
 from classification.stroke import StrokeModel
@@ -36,10 +37,18 @@ diabetes_features = [
         'phys_health', 'diff_walk', 'sex', 'age_category'
     ]
 
+# Create a DCNN Model
+dcnn_model = DCNN_Model()
+# dcnn_model.predict('./test/melanocytic.jpg')
+# dcnn_model.predict('./test/actinic-keratosis.jpg')
+dcnn_model.predict('./test/dermatofibroma.jpg')
+
+
 # Method to make a prediction route
 
+
 def make_route(name, features, model):
-    @app.route(f'/{name}', methods=['POST']) 
+    @app.route(f'/{name}', methods=['POST'], endpoint=name) 
     @cross_origin()
     def predict():
         data = request.get_json()
@@ -53,10 +62,11 @@ def make_route(name, features, model):
             'status': f"success predict {name}",
             'result': result.tolist()
         }) 
+    predict.__name__ = name
     
 # Routes List
-make_route(f'/{coronary_name}', ['sbp','tobacco','ldl','adiposity','famhist','typea','obesity','alcohol','age'], coronary_model)
-make_route(f'/{diabetes_name}', diabetes_features, diabetes_model)
+make_route(f'{coronary_name}', ['sbp','tobacco','ldl','adiposity','famhist','typea','obesity','alcohol','age'], coronary_model)
+make_route(f'{diabetes_name}', diabetes_features, diabetes_model)
 
 # @app.route('/diabetes', methods=['POST'])
 # @cross_origin()
