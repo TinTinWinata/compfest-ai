@@ -5,10 +5,12 @@ from datetime import datetime
 from typing import List
 
 import joblib
+import keras
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import tensorflow as tf
+from keras.layers import Dense
+from keras.models import Sequential, load_model
 from mlxtend.plotting import plot_confusion_matrix
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import (accuracy_score, classification_report,
@@ -16,8 +18,6 @@ from sklearn.metrics import (accuracy_score, classification_report,
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.utils import resample
-from tensorflow.python.keras.layers import Dense
-from tensorflow.python.keras.models import Sequential, load_model
 
 
 class CategoricalMapping:
@@ -140,7 +140,7 @@ class ANN_Model:
         self.model.compile(optimizer ='adam', loss='binary_crossentropy', metrics = ['accuracy']) 
 
         # Training Dataset
-        self.model.fit(X_train, y_train, batch_size = 32, epochs = 100)
+        self.model.fit(X_train, y_train, batch_size = 32, epochs = 10)
 
         # Predicft
         predictions = self.model.predict(X_test)
