@@ -36,7 +36,6 @@ class DCNN_Model:
       
   def make_model(self):
       skin_df = pd.read_csv('./dataset/HAM10000_metadata.csv')
-
       image_id_path_dict, skin_df = self.preprocessing_data(skin_df)
       self.modelling(skin_df)
 

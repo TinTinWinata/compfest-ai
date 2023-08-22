@@ -78,7 +78,11 @@ class ANN_Model:
 
     def preprocess(self):
         # Drop Unused Columns
+        # self.print_df()
+
         self.df.drop(self.drop_list, axis=1, inplace=True)
+
+        # self.print_df()
 
         # Drop Duplicate Values
         self.df.drop_duplicates(inplace=True)
@@ -137,15 +141,16 @@ class ANN_Model:
         X_train, X_test, y_train, y_test = self.split_dataset()
 
         # Compiling Artificial Neural Networks
-        self.model.compile(optimizer ='adam', loss='binary_crossentropy', metrics = ['accuracy']) 
+        self.model.compile(
+            optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
         # Training Dataset
-        self.model.fit(X_train, y_train, batch_size = 32, epochs = 10)
+        self.model.fit(X_train, y_train, batch_size=32, epochs=10)
 
         # Predicft
         predictions = self.model.predict(X_test)
 
-        binary_predictions = np.round(predictions) 
+        binary_predictions = np.round(predictions)
 
         cm = confusion_matrix(y_test, binary_predictions)
 

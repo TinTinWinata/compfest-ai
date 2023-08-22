@@ -30,33 +30,32 @@ coronary_model = ANN_Model(coronary_name, "chd", coronary_map, [])
 
 # Create a Diabetes Model
 diabetes_name = 'diabetes'
-diabetes_model = ANN_Model(diabetes_name, 'Diabetes_binary', [], [])
+diabetes_model = ANN_Model(diabetes_name, 'Diabetes_binary', [], [
+                           'Education', 'Income'])
 diabetes_features = [
-        'HighBP',
-        'HighChol',
-        'CholCheck',
-        'BMI',
-        'Smoker',
-        'Stroke',
-        'HeartDiseaseorAttack',
-        'PhysActivity',
-        'Fruits',
-        'Veggies',
-        'HvyAlcoholConsump',
-        'AnyHealthcare',
-        'NoDocbcCost',
-        'GenHlth',
-        'MentHlth',
-        'PhysHlth',
-        'DiffWalk',
-        'Sex',
-        'Age',
-        'Education',
-        'Income',
+    'HighBP',
+    'HighChol',
+    'CholCheck',
+    'BMI',
+    'Smoker',
+    'Stroke',
+    'HeartDiseaseorAttack',
+    'PhysActivity',
+    'Fruits',
+    'Veggies',
+    'HvyAlcoholConsump',
+    'AnyHealthcare',
+    'NoDocbcCost',
+    'GenHlth',
+    'MentHlth',
+    'PhysHlth',
+    'DiffWalk',
+    'Sex',
+    'Age'
 ]
 
 # Create a DCNN Model
-dcnn_model = DCNN_Model()
+# dcnn_model = DCNN_Model()
 # dcnn_model.predict('./test/melanocytic.jpg')
 # dcnn_model.predict('./test/actinic-keratosis.jpg')
 # dcnn_model.predict('./test/dermatofibroma.jpg')
@@ -66,25 +65,29 @@ dcnn_model = DCNN_Model()
 
 
 def make_route(name, features, model):
-    @app.route(f'/{name}', methods=['POST'], endpoint=name) 
+    @app.route(f'/{name}', methods=['POST'], endpoint=name)
     @cross_origin()
     def predict():
         data = request.get_json()
-        missing_feature = [feature for feature in features if feature not in data]
+        missing_feature = [
+            feature for feature in features if feature not in data]
         if missing_feature:
             abort(
                 404, description=f'Missing required feature: {", ".join(missing_feature)}')
-        convert_data = {key: [value] for key, value in data.items() if key in features}
+        convert_data = {key: [value]
+                        for key, value in data.items() if key in features}
         result = model.predict(convert_data)
         return jsonify({
             'status': f"success predict {name}",
-            'result': result.tolist()
-        }) 
+            'result': result.tolist()[0]
+        })
     predict.__name__ = name
-    
+
 # Routes List
 
-make_route(f'{coronary_name}', ['sbp','tobacco','ldl','adiposity','famhist','typea','obesity','alcohol','age'], coronary_model)
+
+make_route(f'{coronary_name}', ['sbp', 'tobacco', 'ldl', 'adiposity',
+           'famhist', 'typea', 'obesity', 'alcohol', 'age'], coronary_model)
 make_route(f'{diabetes_name}', diabetes_features, diabetes_model)
 # @app.route('/diabetes', methods=['POST'])
 # @cross_origin()
