@@ -1,0 +1,15 @@
+--- Stroke Prediction ---
+Algorithm : Artificial Neural Network
+Accuracy : 79.52
+Classification_report :               precision    recall  f1-score   support
+
+           0       0.88      0.68      0.77       947
+           1       0.74      0.91      0.82       933
+
+    accuracy                           0.80      1880
+   macro avg       0.81      0.80      0.79      1880
+weighted avg       0.81      0.80      0.79      1880
+
+Mean squared error : 0.2047872340425532
+Root mean squared error : 0.4525342352160256
+Date : 2023-08-23 00:16:33

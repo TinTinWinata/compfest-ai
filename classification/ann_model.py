@@ -13,11 +13,11 @@ from keras.layers import Dense
 from keras.models import Sequential, load_model
 from mlxtend.plotting import plot_confusion_matrix
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.impute import SimpleImputer
 from sklearn.metrics import (accuracy_score, classification_report,
                              confusion_matrix, mean_squared_error)
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, StandardScaler
-from sklearn.utils import resample
 
 
 class CategoricalMapping:
@@ -78,14 +78,9 @@ class ANN_Model:
 
     def preprocess(self):
         # Drop Unused Columns
-        # self.print_df()
-
         self.df.drop(self.drop_list, axis=1, inplace=True)
-
-        # self.print_df()
-
         # Drop Duplicate Values
-        self.df.drop_duplicates(inplace=True)
+        # self.df.drop_duplicates(inplace=True)
 
         # Custom Encoding
         for list in self.map_list:

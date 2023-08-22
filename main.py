@@ -18,20 +18,28 @@ cv2.ocl.setUseOpenCL(False)
 
 # Create a new Machine Learning Model
 
-# diabetes_model = DiabetesModel()
+# diabetes_model = DiabetesModel()  
 # stroke_model = StrokeModel()
 
 # Create a new Coronary Model
 
 coronary_name = 'coronary'
-coronary_map = []
-coronary_map.append(CategoricalMapping({'Present': 0, 'Absent': 1}, 'famhist'))
-coronary_model = ANN_Model(coronary_name, "chd", coronary_map, [])
+coronary_categorical = []
+coronary_categorical.append(CategoricalMapping({'Present': 0, 'Absent': 1}, 'famhist'))
+coronary_result = "chd"
+coronary_drop_list = []
+coronary_ann_model = ANN_Model(coronary_name, coronary_result, coronary_categorical, coronary_drop_list)
+coronary_model = Model(coronary_name, coronary_result, coronary_categorical, coronary_drop_list)
+coronary_feature = ['sbp', 'tobacco', 'ldl', 'adiposity',
+           'famhist', 'typea', 'obesity', 'alcohol', 'age']
 
 # Create a Diabetes Model
 diabetes_name = 'diabetes'
-diabetes_model = ANN_Model(diabetes_name, 'Diabetes_binary', [], [
-                           'Education', 'Income'])
+diabetes_result = 'Diabetes_binary'
+diabetes_categorical = []
+diabetes_drop_list = ['Education', 'Income']
+diabetes_ann_model = ANN_Model(diabetes_name, diabetes_result, diabetes_categorical, diabetes_drop_list)
+diabetes_model = Model(diabetes_name, diabetes_result, diabetes_categorical, diabetes_drop_list)
 diabetes_features = [
     'HighBP',
     'HighChol',
@@ -54,15 +62,52 @@ diabetes_features = [
     'Age'
 ]
 
+# Create a Stroke Model
+stroke_name = 'stroke'
+stroke_categorical = [
+    CategoricalMapping({'Male': 0, 'Female': 1, 'Other': 2}, 'gender'),
+    CategoricalMapping({'No': 0, 'Yes': 1}, 'ever_married'),
+    CategoricalMapping({'children': 0, 'Govt_job': 1, 'Never_worked': 2, 'Private': 3 , 'Self-employed': 4}, 'work_type'),
+    CategoricalMapping({'Rural': 0, 'Urban': 1}, 'residence_type'),
+    CategoricalMapping({'formerly smoked': 3, 'never smoked': 2, 'smokes': 1, 'Unknown': 0}, 'smoking_status'),
+    ]
+stroke_result = 'stroke'
+stroke_drop_list = ['id']
+stroke_ann_model = ANN_Model(stroke_name, stroke_result, stroke_categorical, stroke_drop_list)
+stroke_model = Model(stroke_name, stroke_result, stroke_categorical, stroke_drop_list)
+
+stroke_features = [
+'gender','age','hypertension','heart_disease','ever_married','work_type','residence_type','avg_glucose_level','bmi','smoking_status','stroke']
+
+# Create a Mental Model
+mental_name  = 'mental'
+mental_categorical = [
+    CategoricalMapping({'Male': 0, 'Female': 1}, 'Gender'),
+    CategoricalMapping({'0': 0, '100-500': 1, '26-100': 2, '500-1000': 3,'More than 1000': 4}, 'no_employees'),
+]
+menta_drop_list = ['Timestamp', 'Country' , 'state']
+mental_result = 'treatment'
+mental_ann_model = ANN_Model(mental_name, mental_result, mental_categorical , menta_drop_list)
+mental_model = Model(mental_name, mental_result, mental_categorical , menta_drop_list)
+
+mental_features = ['Age','Gender','self_employed','family_history','treatment','work_interfere','no_employees','remote_work','tech_company','benefits','care_options','wellness_program','seek_help','anonymity','leave','mental_health_consequence','phys_health_consequence','coworkers','supervisor','mental_health_interview','phys_health_interview','mental_vs_physical','obs_consequence']
+
+# Create a Heart Model
+cardio_name = 'cardio'
+cardio_drop_list = ['id']
+cardio_categorical_list = []
+cardio_result = 'cardio'
+cardio_ann_model = ANN_Model(cardio_name, cardio_result, cardio_categorical_list, cardio_drop_list)
+cardio_model = Model(cardio_name, cardio_result, cardio_categorical_list, cardio_drop_list)
+cardio_feature = ['age','gender','height','weight','ap_hi','ap_lo','cholesterol','gluc','smoke','alco','active']
+
 # Create a DCNN Model
 # dcnn_model = DCNN_Model()
 # dcnn_model.predict('./test/melanocytic.jpg')
 # dcnn_model.predict('./test/actinic-keratosis.jpg')
 # dcnn_model.predict('./test/dermatofibroma.jpg')
 
-
 # Method to make a prediction route
-
 
 def make_route(name, features, model):
     @app.route(f'/{name}', methods=['POST'], endpoint=name)
@@ -85,63 +130,19 @@ def make_route(name, features, model):
 
 # Routes List
 
-
-make_route(f'{coronary_name}', ['sbp', 'tobacco', 'ldl', 'adiposity',
-           'famhist', 'typea', 'obesity', 'alcohol', 'age'], coronary_model)
+# Default Model Route List
+make_route(f'{coronary_name}', coronary_feature, coronary_model)
 make_route(f'{diabetes_name}', diabetes_features, diabetes_model)
-# @app.route('/diabetes', methods=['POST'])
-# @cross_origin()
-# def predict_diabetes():
-#     data = request.get_json()
-#     features = [
-#         'high_bp', 'high_chol', 'chol_check', 'bmi', 'smoker', 'stroke',
-#         'heart_disease', 'phys_activity', 'fruits', 'veggies', 'heavy_alc',
-#         'health_insurance', 'no_doc_bc_cost', 'gen_health', 'mental_health',
-#         'phys_health', 'diff_walk', 'sex', 'age_category'
-#     ]
+make_route(f'{stroke_name}', stroke_features, stroke_model)
+make_route(f'{mental_name}', mental_features, mental_model)
+make_route(f'{cardio_name}', cardio_feature, cardio_model)
 
-#     missing_feature = [feature for feature in features if feature not in data]
-#     if missing_feature:
-#         abort(
-#             404, description=f'Missing required feature: {", ".join(missing_feature)}')
-
-#     feature_values = [float(data[feature]) for feature in features]
-
-#     result = diabetes_model.predict(*feature_values)
-
-#     print(result, file=sys.stderr)
-
-#     return jsonify({
-#         'status': "success",
-#         'result': result.tolist()
-#     })
-
-
-# @app.route('/stroke', methods=['POST'])
-# @cross_origin()
-# def predict_stroke():
-#     data = request.get_json()
-
-#     features = [
-#         'gender', 'age', 'hypertension', 'heart_disease', 'ever_married', 'work_type', 'Residence_type', 'avg_glucose_level', 'bmi', 'smoking_status',
-#     ]
-
-#     missing_feature = [feature for feature in features if feature not in data]
-#     if missing_feature:
-#         abort(
-#             404, description=f'Missing required feature: {", ".join(missing_feature)}')
-
-#     feature_values = [float(data[feature]) for feature in features]
-
-#     result = stroke_model.predict(*feature_values)
-
-#     print(result, file=sys.stderr)
-
-#     return jsonify({
-#         'status': "success",
-#         'result': result.tolist()
-#     })
-
+# ANN Model Route List
+make_route(f'{coronary_name}-ann', coronary_feature, coronary_ann_model)
+make_route(f'{diabetes_name}-ann', diabetes_features, diabetes_ann_model)
+make_route(f'{stroke_name}-ann', stroke_features, stroke_ann_model)
+make_route(f'{mental_name}-ann', mental_features, mental_ann_model)
+make_route(f'{cardio_name}-ann', cardio_feature, cardio_ann_model)
 
 @app.after_request
 def add_header(response):
