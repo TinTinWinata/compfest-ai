@@ -1,14 +1,14 @@
 --- Mental Prediction ---
 Algorithm : Random Forest Classifier
-Accuracy : 80.89
+Accuracy : 79.27
 Classification_report :               precision    recall  f1-score   support
 
-         0.0       0.77      0.83      0.80       113
-         1.0       0.85      0.79      0.82       133
+         0.0       0.76      0.80      0.78       113
+         1.0       0.82      0.79      0.80       133
 
-    accuracy                           0.81       246
-   macro avg       0.81      0.81      0.81       246
-weighted avg       0.81      0.81      0.81       246
+    accuracy                           0.79       246
+   macro avg       0.79      0.79      0.79       246
+weighted avg       0.79      0.79      0.79       246
 
-Mean squared error : 0.1910569105691057
-Root mean squared error : 0.4371005726021252
+Mean squared error : 0.2073170731707317
+Root mean squared error : 0.45532084640474313

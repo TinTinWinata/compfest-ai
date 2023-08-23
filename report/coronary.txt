@@ -1,14 +1,14 @@
 --- Coronary Prediction ---
 Algorithm : Random Forest Classifier
-Accuracy : 80.17
+Accuracy : 80.99
 Classification_report :               precision    recall  f1-score   support
 
-           0       0.81      0.75      0.78        57
-           1       0.79      0.84      0.82        64
+           0       0.83      0.75      0.79        57
+           1       0.80      0.86      0.83        64
 
-    accuracy                           0.80       121
-   macro avg       0.80      0.80      0.80       121
-weighted avg       0.80      0.80      0.80       121
+    accuracy                           0.81       121
+   macro avg       0.81      0.81      0.81       121
+weighted avg       0.81      0.81      0.81       121
 
-Mean squared error : 0.19834710743801653
-Root mean squared error : 0.4453617714151233
+Mean squared error : 0.19008264462809918
+Root mean squared error : 0.43598468393752

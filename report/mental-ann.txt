@@ -1,15 +1,15 @@
 --- Mental Prediction ---
 Algorithm : Artificial Neural Network
-Accuracy : 70.04
+Accuracy : 69.23
 Classification_report :               precision    recall  f1-score   support
 
-         0.0       0.64      0.85      0.73       119
-         1.0       0.80      0.56      0.66       128
+         0.0       0.66      0.75      0.70       119
+         1.0       0.73      0.64      0.68       128
 
-    accuracy                           0.70       247
-   macro avg       0.72      0.71      0.70       247
-weighted avg       0.72      0.70      0.69       247
+    accuracy                           0.69       247
+   macro avg       0.70      0.69      0.69       247
+weighted avg       0.70      0.69      0.69       247
 
-Mean squared error : 0.29959514170040485
-Root mean squared error : 0.5473528493580762
-Date : 2023-08-23 00:19:10
+Mean squared error : 0.3076923076923077
+Root mean squared error : 0.5547001962252291
+Date : 2023-08-23 16:45:09

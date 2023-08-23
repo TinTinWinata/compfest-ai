@@ -1,6 +1,6 @@
 --- Stroke Prediction ---
 Algorithm : Random Forest Classifier
-Accuracy : 99.04
+Accuracy : 99.2
 Classification_report :               precision    recall  f1-score   support
 
            0       1.00      0.98      0.99       947
@@ -10,5 +10,5 @@ Classification_report :               precision    recall  f1-score   support
    macro avg       0.99      0.99      0.99      1880
 weighted avg       0.99      0.99      0.99      1880
 
-Mean squared error : 0.009574468085106383
-Root mean squared error : 0.09784921095801632
+Mean squared error : 0.007978723404255319
+Root mean squared error : 0.08932370012631205
