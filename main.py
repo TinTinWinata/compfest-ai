@@ -77,20 +77,20 @@ stroke_ann_model = ANN_Model(stroke_name, stroke_result, stroke_categorical, str
 stroke_model = Model(stroke_name, stroke_result, stroke_categorical, stroke_drop_list)
 
 stroke_features = [
-'gender','age','hypertension','heart_disease','ever_married','work_type','residence_type','avg_glucose_level','bmi','smoking_status','stroke']
+'gender','age','hypertension','heart_disease','ever_married','work_type','residence_type','avg_glucose_level','bmi','smoking_status']
 
 # Create a Mental Model
 mental_name  = 'mental'
 mental_categorical = [
-    CategoricalMapping({'Male': 0, 'Female': 1}, 'Gender'),
-    CategoricalMapping({'0': 0, '100-500': 1, '26-100': 2, '500-1000': 3,'More than 1000': 4}, 'no_employees'),
+    CategoricalMapping({'Male': 0, 'Female': 1}, 'Gender')
+    # CategoricalMapping({'0': 0, '100-500': 1, '26-100': 2, '500-1000': 3,'More than 1000': 4}, 'no_employees'),
 ]
-menta_drop_list = ['Timestamp', 'Country' , 'state']
+mental_drop_list = ['Timestamp', 'Country' , 'state', 'no_employees']
 mental_result = 'treatment'
-mental_ann_model = ANN_Model(mental_name, mental_result, mental_categorical , menta_drop_list)
-mental_model = Model(mental_name, mental_result, mental_categorical , menta_drop_list)
+mental_ann_model = ANN_Model(mental_name, mental_result, mental_categorical , mental_drop_list)
+mental_model = Model(mental_name, mental_result, mental_categorical , mental_drop_list)
 
-mental_features = ['Age','Gender','self_employed','family_history','treatment','work_interfere','no_employees','remote_work','tech_company','benefits','care_options','wellness_program','seek_help','anonymity','leave','mental_health_consequence','phys_health_consequence','coworkers','supervisor','mental_health_interview','phys_health_interview','mental_vs_physical','obs_consequence']
+mental_features = ['Age','Gender','self_employed','family_history','work_interfere','remote_work','tech_company','benefits','care_options','wellness_program','seek_help','anonymity','leave','mental_health_consequence','phys_health_consequence','coworkers','supervisor','mental_health_interview','phys_health_interview','mental_vs_physical','obs_consequence']
 
 # Create a Heart Model
 cardio_name = 'cardio'

@@ -3,8 +3,8 @@ Algorithm : Artificial Neural Network
 Accuracy : 66.12
 Classification_report :               precision    recall  f1-score   support
 
-           0       0.63      0.67      0.65        57
-           1       0.69      0.66      0.67        64
+           0       0.65      0.60      0.62        57
+           1       0.67      0.72      0.69        64
 
     accuracy                           0.66       121
    macro avg       0.66      0.66      0.66       121
@@ -12,4 +12,4 @@ weighted avg       0.66      0.66      0.66       121
 
 Mean squared error : 0.33884297520661155
 Root mean squared error : 0.5821022034029862
-Date : 2023-08-22 10:53:20
+Date : 2023-08-24 23:37:14
