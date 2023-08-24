@@ -1,15 +1,15 @@
 --- Coronary Prediction ---
 Algorithm : Artificial Neural Network
-Accuracy : 66.12
+Accuracy : 70.25
 Classification_report :               precision    recall  f1-score   support
 
-           0       0.63      0.67      0.65        57
-           1       0.69      0.66      0.67        64
+           0       0.68      0.70      0.69        57
+           1       0.73      0.70      0.71        64
 
-    accuracy                           0.66       121
-   macro avg       0.66      0.66      0.66       121
-weighted avg       0.66      0.66      0.66       121
+    accuracy                           0.70       121
+   macro avg       0.70      0.70      0.70       121
+weighted avg       0.70      0.70      0.70       121
 
-Mean squared error : 0.33884297520661155
-Root mean squared error : 0.5821022034029862
-Date : 2023-08-22 10:53:20
+Mean squared error : 0.2975206611570248
+Root mean squared error : 0.5454545454545454
+Date : 2023-08-23 06:29:32

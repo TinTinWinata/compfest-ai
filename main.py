@@ -23,42 +23,46 @@ cv2.ocl.setUseOpenCL(False)
 
 # Create a new Coronary Model
 
-coronary_name = 'coronary'
-coronary_map = []
-coronary_map.append(CategoricalMapping({'Present': 0, 'Absent': 1}, 'famhist'))
-coronary_model = ANN_Model(coronary_name, "chd", coronary_map, [])
-
-# Create a Diabetes Model
-diabetes_name = 'diabetes'
-diabetes_model = ANN_Model(diabetes_name, 'Diabetes_binary', [], [
-                           'Education', 'Income'])
-diabetes_features = [
-    'HighBP',
-    'HighChol',
-    'CholCheck',
-    'BMI',
-    'Smoker',
-    'Stroke',
-    'HeartDiseaseorAttack',
-    'PhysActivity',
-    'Fruits',
-    'Veggies',
-    'HvyAlcoholConsump',
-    'AnyHealthcare',
-    'NoDocbcCost',
-    'GenHlth',
-    'MentHlth',
-    'PhysHlth',
-    'DiffWalk',
-    'Sex',
-    'Age'
-]
+# coronary_name = 'coronary'
+# coronary_map = []
+# coronary_map.append(CategoricalMapping({'Present': 0, 'Absent': 1}, 'famhist'))
+# coronary_model = ANN_Model(coronary_name, "chd", coronary_map, [])
+#
+# # Create a Diabetes Model
+# diabetes_name = 'diabetes'
+# diabetes_model = ANN_Model(diabetes_name, 'Diabetes_binary', [], [
+#                            'Education', 'Income'])
+# diabetes_features = [
+#     'HighBP',
+#     'HighChol',
+#     'CholCheck',
+#     'BMI',
+#     'Smoker',
+#     'Stroke',
+#     'HeartDiseaseorAttack',
+#     'PhysActivity',
+#     'Fruits',
+#     'Veggies',
+#     'HvyAlcoholConsump',
+#     'AnyHealthcare',
+#     'NoDocbcCost',
+#     'GenHlth',
+#     'MentHlth',
+#     'PhysHlth',
+#     'DiffWalk',
+#     'Sex',
+#     'Age'
+# ]
 
 # Create a DCNN Model
-# dcnn_model = DCNN_Model()
-# dcnn_model.predict('./test/melanocytic.jpg')
-# dcnn_model.predict('./test/actinic-keratosis.jpg')
-# dcnn_model.predict('./test/dermatofibroma.jpg')
+dcnn_model = DCNN_Model()
+dcnn_model.predict('./test/melanocytic.jpg')
+dcnn_model.predict('./test/actinic-keratosis.jpg')
+dcnn_model.predict('./test/dermatofibroma.jpg')
+dcnn_model.predict('./test/Benign.jpg')
+dcnn_model.predict('./test/melanocytic.jpg')
+dcnn_model.predict('./test/melanoma.jpg')
+dcnn_model.predict('./test/basal-cell-carcinoma.jpg')
 
 
 # Method to make a prediction route
