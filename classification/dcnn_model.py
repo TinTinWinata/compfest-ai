@@ -2,10 +2,12 @@
 
 import os
 from glob import glob
+from io import BytesIO
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import requests
 from keras.callbacks import ReduceLROnPlateau
 from keras.layers import Conv2D, Dense, Dropout, Flatten, MaxPool2D
 from keras.models import Sequential, load_model
@@ -68,7 +70,6 @@ class DCNN_Model:
       df['image'] = df['path'].map(lambda x: np.asarray(Image.open(x).resize((100, 75))))
       print(df.head())
       return paths, df
-
 
   def modelling(self, df):
       features = df.drop(columns=['cell_type_idx'], axis=1)
@@ -162,17 +163,24 @@ class DCNN_Model:
             6: 'Dermatofibroma'
         }
       
-      print('Predict Probabilities : ', predict_probabilities)
-      print('Predict Value : ', result)
-      print('Reult : ', class_idx_to_label[result])
-      return result
+      return {
+          'predict': predict_probabilities.tolist()[0],
+          'value': float(result),
+          'result': class_idx_to_label[result]
+      }
+
+  def get_external_image(self, url):
+      response = requests.get(url)
+      return response.content
 
   def preprocess_input_image(self, image_path):
-      img = Image.open(image_path)
+      img = Image.open(BytesIO(self.get_external_image(image_path)))
       img = img.resize((100, 75))  # Resize to match training input size
       img = np.asarray(img)  # Convert image to numpy array
       img = (img - np.mean(img)) / np.std(img)  # Normalize the image
       img = img.reshape(1, 75, 100, 3)  # Reshape to match model's input shape
+    #   img.show()
+    #   img.save('../test/test.jpg')
       return img
 
   def image_preprocessing(self, features, target):

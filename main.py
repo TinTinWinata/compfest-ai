@@ -102,7 +102,7 @@ cardio_model = Model(cardio_name, cardio_result, cardio_categorical_list, cardio
 cardio_feature = ['age','gender','height','weight','ap_hi','ap_lo','cholesterol','gluc','smoke','alco','active']
 
 # Create a DCNN Model
-# dcnn_model = DCNN_Model()
+dcnn_model = DCNN_Model()
 # dcnn_model.predict('./test/melanocytic.jpg')
 # dcnn_model.predict('./test/actinic-keratosis.jpg')
 # dcnn_model.predict('./test/dermatofibroma.jpg')
@@ -143,6 +143,22 @@ make_route(f'{diabetes_name}-ann', diabetes_features, diabetes_ann_model)
 make_route(f'{stroke_name}-ann', stroke_features, stroke_ann_model)
 make_route(f'{mental_name}-ann', mental_features, mental_ann_model)
 make_route(f'{cardio_name}-ann', cardio_feature, cardio_ann_model)
+
+# DCNN Model Routes
+
+@app.route(f'/dcnn', methods=['POST'])
+@cross_origin()
+def predict_dcnn():
+    data = request.get_json()
+    if(data['link'] is None):
+        abort(
+            404, description=f'Missing link')
+
+    result = dcnn_model.predict(data['link'])
+    return jsonify({
+        'status': f"success predict dcnn",
+        'result': result,
+    })
 
 @app.after_request
 def add_header(response):
