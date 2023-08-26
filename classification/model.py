@@ -96,6 +96,7 @@ class Model:
 
         # Concat Dataframe
         self.df = pd.concat([over_sample, class_0], axis=0)
+        self.print_df()
 
     def split_dataset(self):
         # Split features and labels
@@ -105,6 +106,7 @@ class Model:
         # Feature Scaling
         self.scalar = StandardScaler()
         X = self.scalar.fit_transform(X)
+
 
         # Split into train and test
         X_train, X_test, y_train, y_test = train_test_split(

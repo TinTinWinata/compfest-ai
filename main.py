@@ -12,7 +12,7 @@ from classification.model import CategoricalMapping, Model
 from classification.stroke import StrokeModel
 
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}})
+CORS(app)
 
 cv2.ocl.setUseOpenCL(False)
 
@@ -159,6 +159,12 @@ def predict_dcnn():
         'status': f"success predict dcnn",
         'result': result,
     })
+
+# Test Routes
+@app.route('/', methods=['GET'])
+@cross_origin()
+def test():
+    return 'Success'
 
 @app.after_request
 def add_header(response):
