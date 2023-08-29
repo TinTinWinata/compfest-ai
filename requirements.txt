@@ -7,7 +7,6 @@ mlxtend==0.22.0
 numpy==1.23.5
 opencv_contrib_python==4.7.0.68
 opencv_python==4.7.0.68
-<<<<<<< HEAD
 pandas
 Pillow==9.4.0
 scikit_learn
@@ -15,11 +14,3 @@ seaborn==0.12.2
 librosa
 nolds
 pyrpde
-=======
-pandas==2.0.1
-Pillow==10.0.0
-Requests==2.31.0
-scikit_learn==1.2.2
-seaborn==0.12.2
-tensorflow==2.13.0
->>>>>>> 5017a88e59e52562014bb5c6455fcc39b39da19f
