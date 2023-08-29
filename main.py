@@ -1,6 +1,5 @@
 import sys
 
-import cv2
 from flask import *
 from flask_cors import CORS, cross_origin
 
@@ -14,7 +13,6 @@ from classification.stroke import StrokeModel
 app = Flask(__name__)
 CORS(app)
 
-cv2.ocl.setUseOpenCL(False)
 
 # Create a new Machine Learning Model
 
@@ -111,7 +109,7 @@ dcnn_model = DCNN_Model()
 
 def make_route(name, features, model):
     @app.route(f'/{name}', methods=['POST'], endpoint=name)
-    @cross_origin()
+    # @cross_origin()
     def predict():
         data = request.get_json()
         missing_feature = [
@@ -147,7 +145,7 @@ make_route(f'{cardio_name}-ann', cardio_feature, cardio_ann_model)
 # DCNN Model Routes
 
 @app.route(f'/dcnn', methods=['POST'])
-@cross_origin()
+# @cross_origin()
 def predict_dcnn():
     data = request.get_json()
     if(data['link'] is None):
@@ -162,7 +160,7 @@ def predict_dcnn():
 
 # Test Routes
 @app.route('/', methods=['GET'])
-@cross_origin()
+# @cross_origin()
 def test():
     return 'Success'
 
@@ -174,3 +172,5 @@ def add_header(response):
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=False, port=8000)
+
+
