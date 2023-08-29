@@ -1,14 +1,14 @@
 --- Cardio Prediction ---
 Algorithm : Random Forest Classifier
-Accuracy : 82.72
+Accuracy : 81.48
 Classification_report :               precision    recall  f1-score   support
 
-         0.0       0.86      0.78      0.82        81
-         1.0       0.80      0.88      0.84        81
+         0.0       0.82      0.80      0.81        81
+         1.0       0.81      0.83      0.82        81
 
-    accuracy                           0.83       162
-   macro avg       0.83      0.83      0.83       162
-weighted avg       0.83      0.83      0.83       162
+    accuracy                           0.81       162
+   macro avg       0.82      0.81      0.81       162
+weighted avg       0.82      0.81      0.81       162
 
-Mean squared error : 0.1728395061728395
-Root mean squared error : 0.41573970964154905
+Mean squared error : 0.18518518518518517
+Root mean squared error : 0.4303314829119352

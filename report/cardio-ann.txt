@@ -1,15 +1,15 @@
 --- Cardio Prediction ---
 Algorithm : Artificial Neural Network
-Accuracy : 63.58
+Accuracy : 69.14
 Classification_report :               precision    recall  f1-score   support
 
-         0.0       0.74      0.42      0.54        81
-         1.0       0.59      0.85      0.70        81
+         0.0       0.67      0.74      0.71        81
+         1.0       0.71      0.64      0.68        81
 
-    accuracy                           0.64       162
-   macro avg       0.67      0.64      0.62       162
-weighted avg       0.67      0.64      0.62       162
+    accuracy                           0.69       162
+   macro avg       0.69      0.69      0.69       162
+weighted avg       0.69      0.69      0.69       162
 
-Mean squared error : 0.36419753086419754
-Root mean squared error : 0.6034878050666787
-Date : 2023-08-24 23:42:34
+Mean squared error : 0.30864197530864196
+Root mean squared error : 0.5555555555555556
+Date : 2023-08-28 15:20:38

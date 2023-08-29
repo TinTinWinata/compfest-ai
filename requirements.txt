@@ -18,3 +18,6 @@ pandas
 Pillow==9.4.0
 scikit_learn
 seaborn==0.12.2
+librosa
+nolds
+pyrpde

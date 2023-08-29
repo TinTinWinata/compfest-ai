@@ -1,0 +1,11 @@
+Parkinson Prediction DiagnoAI.
+Algorithm : Support Vector Machine
+Accuracy : 84.62
+Classification_report :               precision    recall  f1-score   support
+
+           0       0.70      0.70      0.70        10
+           1       0.90      0.90      0.90        29
+
+    accuracy                           0.85        39
+   macro avg       0.80      0.80      0.80        39
+weighted avg       0.85      0.85      0.85        39
