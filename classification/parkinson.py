@@ -5,6 +5,8 @@ import pandas as pd
 import os
 import io
 import soundfile as sf
+from pydub import AudioSegment
+import subprocess
 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -108,16 +110,19 @@ class ParkinsonModel:
     # shimmer_dda, nhr, hnr, rpde_value, dfa_value, spread1, spread2, d2_value,
     # ppe):
 
+    def convert_webm_to_mp3(self, input_path, output_path):
+        try:
+            subprocess.run(['ffmpeg', '-i', input_path, output_path])
+            print("Conversion completed successfully.")
+        except Exception as e:
+            print("An error occurred:", str(e))
+
+
     def predict(self, data):
-
-        audio_file = data
-
-        audio_signal, sampling_rate = librosa.load(audio_file, sr=None)
-        # audio_signal = audio_file.read()
-        # print(data)
-
-        # temp = io.BytesIO(audio_file.read())
-        # audio_signal, sampling_rate = sf.read(temp)
+        
+        audio_file = data 
+        
+        audio_signal, _ = librosa.load(audio_file)
 
 
         # Calculate the fundamental frequency (pitch) using the "pyin" pitch detection algorithm
