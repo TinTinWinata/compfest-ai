@@ -14,3 +14,4 @@ seaborn==0.12.2
 librosa
 nolds
 pyrpde
+gunicorn==20.1.0
