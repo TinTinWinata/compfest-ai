@@ -122,6 +122,7 @@ class ParkinsonModel:
         
         audio_signal, _ = librosa.load(audio_file)
 
+        print(audio_signal)
 
         # Calculate the fundamental frequency (pitch) using the "pyin" pitch detection algorithm
         f0, voiced_flag, voiced_probs = librosa.pyin(audio_signal, fmin=librosa.note_to_hz('C2'), fmax=librosa.note_to_hz('C7'))

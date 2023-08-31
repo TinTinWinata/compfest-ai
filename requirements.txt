@@ -19,3 +19,4 @@ tensorflow-datasets
 transformers==4.29.2
 gymnasium==0.28.1
 imbalanced-learn
+gunicorn==20.1.0
