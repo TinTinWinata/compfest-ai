@@ -14,3 +14,8 @@ seaborn==0.12.2
 librosa
 nolds
 pyrpde
+tensorflow
+tensorflow-datasets
+transformers==4.29.2
+gymnasium==0.28.1
+imbalanced-learn

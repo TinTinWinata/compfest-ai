@@ -1,24 +1,22 @@
-import joblib
-import matplotlib.pyplot as plt
-import numpy as np 
-import pandas as pd
-import os
 import io
-import soundfile as sf
-from pydub import AudioSegment
+import os
 import subprocess
 
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn import svm
-from sklearn.metrics import accuracy_score
+import joblib
+import librosa
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import soundfile as sf
 from mlxtend.plotting import plot_confusion_matrix
+from nolds import corr_dim, dfa
+from pyrpde import rpde
+from sklearn import svm
 from sklearn.metrics import (accuracy_score, classification_report,
                              confusion_matrix, mean_squared_error)
 from sklearn.model_selection import train_test_split
-import librosa
-from nolds import dfa, corr_dim
-from pyrpde import rpde
+from sklearn.preprocessing import StandardScaler
+
 
 class ParkinsonModel:
     def __init__(self):

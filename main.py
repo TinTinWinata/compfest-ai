@@ -1,17 +1,17 @@
+# from moviepy.editor import VideoFileClip
+import os
 import sys
 
 from flask import *
 from flask_cors import CORS, cross_origin
-from moviepy.editor import VideoFileClip
-import os
 
 from classification.ann_model import ANN_Model
 from classification.dcnn_model import DCNN_Model
 # from classification.dcnn_model import DCNN_Model
 from classification.diabetes import DiabetesModel
 from classification.model import CategoricalMapping, Model
-from classification.stroke import StrokeModel
 from classification.parkinson import ParkinsonModel
+from classification.stroke import StrokeModel
 
 app = Flask(__name__)
 CORS(app)
@@ -103,7 +103,7 @@ CORS(app)
 # cardio_feature = ['age','gender','height','weight','ap_hi','ap_lo','cholesterol','gluc','smoke','alco','active']
 
 # Create a DCNN Model
-# dcnn_model = DCNN_Model()
+dcnn_model = DCNN_Model()
 # dcnn_model.predict('./test/melanocytic.jpg')
 # dcnn_model.predict('./test/actinic-keratosis.jpg')
 # dcnn_model.predict('./test/dermatofibroma.jpg')
