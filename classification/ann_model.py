@@ -20,6 +20,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 
 
+
 class CategoricalMapping:
     def __init__(self, map, name):
         self.map = map
@@ -119,16 +120,14 @@ class ANN_Model:
         self.model = Sequential()
 
         # First Layer or Input
-        self.model.add(Dense(units=6, activation='relu'))
+        self.model.add(Dense(units=128, activation='relu'))
 
         # Second Layer
-        self.model.add(Dense(units=6, activation='relu'))
+        self.model.add(Dense(units=128, activation='relu'))
 
-        self.model.add(Dense(units=6, activation='relu'))
-
-        self.model.add(Dense(units=6, activation='relu'))
-
-        self.model.add(Dense(units=6, activation='relu'))
+        self.model.add(Dense(units=128, activation='relu'))
+        self.model.add(Dense(units=128, activation='relu'))
+        self.model.add(Dense(units=128, activation='relu'))
 
         # Output Layer
         self.model.add(Dense(units=1, activation='sigmoid'))
@@ -140,7 +139,7 @@ class ANN_Model:
             optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
         # Training Dataset
-        self.model.fit(X_train, y_train, batch_size=32, epochs=10)
+        self.model.fit(X_train, y_train, batch_size=32, epochs=100)
 
         # Predicft
         predictions = self.model.predict(X_test)
@@ -194,7 +193,8 @@ class ANN_Model:
             f.write('\nDate : ' + current_time)
 
     def load_model(self):
-        self.model = load_model(self.path)
+        self.model = load_model(self.path, compile=False)
+        self.model.compile()
 
     def save_model(self):
         self.model.save(self.path)

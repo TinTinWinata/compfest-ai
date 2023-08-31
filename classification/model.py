@@ -15,6 +15,7 @@ from sklearn.metrics import (accuracy_score, classification_report,
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.utils import resample
+project_root = os.path.dirname(os.path.realpath('__file__'))
 
 
 class CategoricalMapping:
