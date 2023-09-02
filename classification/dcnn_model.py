@@ -33,16 +33,18 @@ class DCNN_Model:
     def __init__(self):
         print("Available devices:", tf.config.list_physical_devices())
         print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
-        self.path = './model/dcnn.h5'
+        self.path = 'model/dcnn.h5'
         self.check_model_exist()
+        self.mean = 159.8174582437455
+        self.std = 46.41408053415013
 
     def check_model_exist(self):
-        if(os.path.exists(self.path)):
+        if os.path.exists(self.path):
             # If Exist Load Model
             print('Load Model')
             self.load_model()
         else:
-            # If Doesn't Exit Build Model
+            # If it doesn't Exit Build Model
             print('Making Model')
             self.main()
 
@@ -96,6 +98,11 @@ class DCNN_Model:
         print("Std: ", feature_std)
 
         features = (features - feature_mean) / feature_std
+
+        # Blue starts here
+        plt.imshow((features[0]).astype('uint8'))
+        plt.title("Normalized Image")
+        plt.show()
 
         # One Hot Encoder
         target = to_categorical(target, num_classes=NUM_CLASSES)
@@ -304,7 +311,7 @@ class DCNN_Model:
         )
 
         datagen.fit(x_train)
-
+        print(np.min(x_train), np.max(x_train))
         augmented_images, _ = next(datagen.flow(x_train, y_train, batch_size=10))
 
         fig, axes = plt.subplots(1, 10, figsize=(20, 20),
@@ -317,7 +324,7 @@ class DCNN_Model:
         plt.show()
 
         # Fitting the model
-        epochs = 80 # For temporary 10 so I can debug better
+        epochs = 80
         batch_size = 5
         history = model.fit(datagen.flow(x_train, y_train, batch_size=batch_size),
                             epochs=epochs,
@@ -405,7 +412,7 @@ class DCNN_Model:
         print(features[:5])
         print('Making model')
         self.model = self.make_model()
-        history = self.fitting_the_model(self.model, x_train, x_val, x_test, y_train, y_val, y_test)
+        self.fitting_the_model(self.model, x_train, x_val, x_test, y_train, y_val, y_test)
         
   # ----------------
   # LOAD MODEL
@@ -415,7 +422,8 @@ class DCNN_Model:
 
     def predict(self, image_path):
         input_image = self.preprocess_input_image(image_path)
-        predict_probabilities = self.model.predict(input_image)
+        input_image = self.datagen_input_image(input_image)
+        predict_probabilities = self.model.predict(np.expand_dims(input_image, axis=0), verbose=1)
         result = np.argmax(predict_probabilities)
         class_idx_to_label = {
             0: 'Melanocytic nevi',
@@ -437,10 +445,35 @@ class DCNN_Model:
         response = requests.get(url)
         return response.content
 
+
     def preprocess_input_image(self, image_path):
         img = Image.open(BytesIO(self.get_external_image(image_path)))
-        img = img.resize((100, 75))  # Resize to match training input size
+        # img = Image.open(image_path)
+        img = img.resize((100, 75))
         img = np.asarray(img)  # Convert image to numpy array
-        img = (img - np.mean(img)) / np.std(img)  # Normalize the image
+        img = (img - self.mean) / self.std  # Normalize the image
+
+        # # Blue starts here
+        # plt.imshow((img).astype('uint8'))
+        # plt.title("Normalized Image")
+        # plt.show()
+
         img = img.reshape(1, 75, 100, 3)  # Reshape to match model's input shape
         return img
+
+    def datagen_input_image(self, input_image):
+        datagen = ImageDataGenerator(
+            featurewise_center=False,  # set input mean to 0 over the dataset
+            samplewise_center=False,  # set each sample mean to 0
+            featurewise_std_normalization=False,  # divide inputs by std of the dataset
+            samplewise_std_normalization=False,  # divide each input by its std
+            zca_whitening=False,  # apply ZCA whitening
+        )
+
+        datagen.fit(input_image)
+        augmented_iterator = datagen.flow(input_image, batch_size=1)
+        augmented_image = next(augmented_iterator)[0]
+        # plt.imshow(np.clip(np.squeeze(augmented_image), 0, 255), cmap='gray')
+        # plt.show()
+
+        return augmented_image
