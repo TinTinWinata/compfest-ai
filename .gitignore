@@ -2,3 +2,5 @@ model/
 venv/
 dcnn-dataset/
 archive_7.zip
+upload.zip
+*.zip
