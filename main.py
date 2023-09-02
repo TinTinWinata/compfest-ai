@@ -3,7 +3,7 @@ import os
 import sys
 
 from flask import *
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 
 from classification.ann_model import ANN_Model
 from classification.dcnn_model import DCNN_Model
@@ -173,7 +173,7 @@ def predict_dcnn():
 
 # Parkinson Model Routes
 @app.route(f'/parkinson', methods=['POST'])
-@cross_origin()
+#@cross_origin()
 def predict():
 
     ALLOWED_EXTENSIONS = {'wav', 'mp3', 'webm'}
@@ -194,12 +194,12 @@ def predict():
     result = parkinson_model.predict(data)
 
 
-    if (result[0] == 0): result = "you don't have parkinson's disease"
-    else: result = "you have parkinson's disease"
+    if (result[0] == 0): result = 0 # no parkinson
+    else: result = 1 # have parkinson
 
     return jsonify({
         'status' : f"success predict parkinson",
-        'result' : result 
+        'result' : result
     })
 
 # Test Routes
