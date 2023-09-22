@@ -451,7 +451,8 @@ class DCNN_Model:
             3: 'Basal cell carcinoma',
             4: 'Actinic keratoses',
             5: 'Vascular lesions',
-            6: 'Dermatofibroma'
+            6: 'Dermatofibroma',
+            7: 'Clear Skin'
         }
 
         return {
