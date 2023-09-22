@@ -26,10 +26,27 @@ from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 from tensorflow.python.ops.state_ops import scatter_nd_sub
 
-NUM_CLASSES = 7
+NUM_CLASSES = 8
 INPUT_SHAPE = (75, 100, 3)
 
-class DCNN_Model: 
+
+def load_clear_skin_datasets(df):
+    print("Loading Normal Clear Skin Dataset")
+
+    clear_skin_image_list = []
+
+    for filename in os.listdir("./dcnn-dataset/normal-skin"):
+        path = "./dcnn-dataset/normal-skin/" + filename
+        clear_skin_image_list.append(np.asarray(Image.open(path).resize((100, 75))))
+
+    image_series = pd.Series(clear_skin_image_list, name='image')
+
+    df = pd.concat([df, pd.DataFrame({"image": image_series, 'cell_type_idx': 7})], ignore_index=True)
+
+    return df
+
+
+class DCNN_Model:
     def __init__(self):
         print("Available devices:", tf.config.list_physical_devices())
         print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
@@ -53,7 +70,7 @@ class DCNN_Model:
   # ----------------
 
     def read_data(self, ):
-       return pd.read_csv('./dcnn-dataset/HAM10000_metadata.csv')
+       return pd.read_csv('./dcnn-dataset/skin-lesion/HAM10000_metadata.csv')
 
 
     def preprocess_data(self, df):
@@ -61,7 +78,7 @@ class DCNN_Model:
         paths = {}
 
         # Get a dictionary filled with all image Ids, and their path
-        for x in glob(os.path.join("./dcnn-dataset", "*", "*.jpg")):
+        for x in glob(os.path.join("./dcnn-dataset/skin-lesion/", "*", "*.jpg")):
             paths[os.path.splitext(os.path.basename(x))[0]] = x
 
         df['path'] = df['image_id'].map(paths.get)
@@ -74,12 +91,14 @@ class DCNN_Model:
             'bcc': 'Basal cell carcinoma',
             'akiec': 'Actinic keratoses',
             'vasc': 'Vascular lesions',
-            'df': 'Dermatofibroma'
+            'df': 'Dermatofibroma',
+            "clr": "Clear Skin"
         }
 
         df['cell_type'] = df['dx'].map(lesion_type.get)
         df['cell_type_idx'] = pd.Categorical(df['cell_type']).codes
         df['image'] = df['path'].map(lambda image: np.asarray(Image.open(image).resize((100, 75))))
+        df = load_clear_skin_datasets(df)
         return df
 
 
@@ -353,7 +372,7 @@ class DCNN_Model:
         fig, ax = plot_confusion_matrix(conf_mat=cm, show_absolute=True,
                                 show_normed=True,
                                 colorbar=True)
-        
+
         plt.savefig('./report/dcnn-confusion.jpg')
 
         lesion_type = [
@@ -413,7 +432,7 @@ class DCNN_Model:
         print('Making model')
         self.model = self.make_model()
         self.fitting_the_model(self.model, x_train, x_val, x_test, y_train, y_val, y_test)
-        
+
   # ----------------
   # LOAD MODEL
   # ----------------
@@ -434,7 +453,7 @@ class DCNN_Model:
             5: 'Vascular lesions',
             6: 'Dermatofibroma'
         }
-        
+
         return {
             'predict': predict_probabilities.tolist()[0],
             'value': float(result),
@@ -477,3 +496,4 @@ class DCNN_Model:
         # plt.show()
 
         return augmented_image
+
