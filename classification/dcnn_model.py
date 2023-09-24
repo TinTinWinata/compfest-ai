@@ -30,22 +30,6 @@ NUM_CLASSES = 8
 INPUT_SHAPE = (75, 100, 3)
 
 
-def load_clear_skin_datasets(df):
-    print("Loading Normal Clear Skin Dataset")
-
-    clear_skin_image_list = []
-
-    for filename in os.listdir("./dcnn-dataset/normal-skin"):
-        path = "./dcnn-dataset/normal-skin/" + filename
-        clear_skin_image_list.append(np.asarray(Image.open(path).resize((100, 75))))
-
-    image_series = pd.Series(clear_skin_image_list, name='image')
-
-    df = pd.concat([df, pd.DataFrame({"image": image_series, 'cell_type_idx': 7})], ignore_index=True)
-
-    return df
-
-
 class DCNN_Model:
     def __init__(self):
         print("Available devices:", tf.config.list_physical_devices())
@@ -65,13 +49,12 @@ class DCNN_Model:
             print('Making Model')
             self.main()
 
-  # ----------------
-  # MAKE MODEL
-  # ----------------
+    # ----------------
+    # MAKE MODEL
+    # ----------------
 
     def read_data(self, ):
-       return pd.read_csv('./dcnn-dataset/skin-lesion/HAM10000_metadata.csv')
-
+        return pd.read_csv('./dcnn-dataset/skin-lesion/HAM10000_metadata.csv')
 
     def preprocess_data(self, df):
         # Preprocess Data
@@ -98,13 +81,13 @@ class DCNN_Model:
         df['cell_type'] = df['dx'].map(lesion_type.get)
         df['cell_type_idx'] = pd.Categorical(df['cell_type']).codes
         df['image'] = df['path'].map(lambda image: np.asarray(Image.open(image).resize((100, 75))))
-        df = load_clear_skin_datasets(df)
+        df = self.load_clear_skin_datasets(df)
         return df
-
 
     def smote_sampling(self, features, target):
         rus = SMOTE(random_state=42)
-        features, target = rus.fit_resample(features.reshape(-1, INPUT_SHAPE[0] * INPUT_SHAPE[1] * INPUT_SHAPE[2]), target)
+        features, target = rus.fit_resample(features.reshape(-1, INPUT_SHAPE[0] * INPUT_SHAPE[1] * INPUT_SHAPE[2]),
+                                            target)
         features = features.reshape(-1, *INPUT_SHAPE)
         return features, target
 
@@ -130,6 +113,20 @@ class DCNN_Model:
         features = features.reshape(features.shape[0], *INPUT_SHAPE)
         return self.smote_sampling(features, target)
 
+    def load_clear_skin_datasets(self, df):
+        print("Loading Normal Clear Skin Dataset")
+
+        clear_skin_image_list = []
+
+        for filename in os.listdir("./dcnn-dataset/normal-skin"):
+            path = "./dcnn-dataset/normal-skin/" + filename
+            clear_skin_image_list.append(np.asarray(Image.open(path).resize((100, 75))))
+
+        image_series = pd.Series(clear_skin_image_list, name='image')
+
+        df = pd.concat([df, pd.DataFrame({"image": image_series, 'cell_type_idx': 7})], ignore_index=True)
+
+        return df
 
     def convolutional_block(self, x, growth_rate, dropout_rate=None):
         x1 = BatchNormalization()(x)
@@ -150,7 +147,6 @@ class DCNN_Model:
         x = concatenate([x, x1])
         return x
 
-
     def transition_block(self, x, reduction):
         x = BatchNormalization()(x)
         x = Activation('relu')(x)
@@ -158,12 +154,10 @@ class DCNN_Model:
         x = AveragePooling2D((2, 2), padding='same', strides=2)(x)
         return x
 
-
     def dense_block(self, x, growth_rate, n_layers):
         for i in range(n_layers):
             x = self.convolutional_block(x, growth_rate)
         return x
-
 
     # def DenseNet(self, growth_rate=32):
     #     # Laptop ga kuat
@@ -189,7 +183,6 @@ class DCNN_Model:
     #     model = Model(inputs=x_input, outputs=x)
     #
     #     return model
-
 
     def residual_block(self, x, filters, down_sample=None):
         x_shortcut = x
@@ -270,7 +263,6 @@ class DCNN_Model:
         model = Model(inputs=x_input, outputs=x)
         return model
 
-
     # def basic_model(self, ):
     #     model = Sequential([
     #         Conv2D(32, kernel_size=(3, 3), activation="relu", padding="same", input_shape=INPUT_SHAPE),
@@ -290,7 +282,6 @@ class DCNN_Model:
     #     ])
     #     return model
 
-
     def make_model(self, ):
         model = self.ResNet_18()
         # optimizer = Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, amsgrad=False)
@@ -300,13 +291,11 @@ class DCNN_Model:
         print(model.summary())
         return model
 
-
     def splitting_dataset(self, features, target):
         x_train, x_temp, y_train, y_temp = train_test_split(features, target, test_size=0.4, random_state=42)
         x_test, x_val, y_test, y_val = train_test_split(x_temp, y_temp, test_size=0.5, random_state=42)
 
         return x_train, x_val, x_test, y_train, y_val, y_test
-
 
     def fitting_the_model(self, model, x_train, x_val, x_test, y_train, y_val, y_test):
         learning_rate_reduction = ReduceLROnPlateau(monitor='val_accuracy',
@@ -334,8 +323,8 @@ class DCNN_Model:
         augmented_images, _ = next(datagen.flow(x_train, y_train, batch_size=10))
 
         fig, axes = plt.subplots(1, 10, figsize=(20, 20),
-                                subplot_kw={'xticks': [], 'yticks': []},
-                                gridspec_kw=dict(hspace=0.1, wspace=0.1))
+                                 subplot_kw={'xticks': [], 'yticks': []},
+                                 gridspec_kw=dict(hspace=0.1, wspace=0.1))
 
         for i, ax in enumerate(axes.flat):
             ax.imshow(np.clip(np.squeeze(augmented_images[i]), 0, 255), cmap='gray')
@@ -361,7 +350,6 @@ class DCNN_Model:
         print("Test: accuracy = %f  ;  loss = %f" % (accuracy, loss))
         self.print_confusion_matrix(model, x_test, y_test)
 
-
     def print_confusion_matrix(self, model, x_test, y_test):
         y_pred = model.predict(x_test)
 
@@ -370,8 +358,8 @@ class DCNN_Model:
 
         cm = confusion_matrix(y_true, y_pred)
         fig, ax = plot_confusion_matrix(conf_mat=cm, show_absolute=True,
-                                show_normed=True,
-                                colorbar=True)
+                                        show_normed=True,
+                                        colorbar=True)
 
         plt.savefig('./report/dcnn-confusion.jpg')
 
@@ -385,10 +373,9 @@ class DCNN_Model:
             'Dermatofibroma'
         ]
         ax = sns.heatmap(cm, cmap="rocket_r", fmt=".01f", annot_kws={'size': 16}, annot=True, square=True,
-                        xticklabels=lesion_type, yticklabels=lesion_type)  # What should I put here as a label
+                         xticklabels=lesion_type, yticklabels=lesion_type)  # What should I put here as a label
         ax.set_ylabel('Actual', fontsize=20)
         ax.set_xlabel('Predicted', fontsize=20)
-
 
     def plot_result(self, history):
         # Plot accuracy and loss
@@ -414,7 +401,6 @@ class DCNN_Model:
         plt.savefig("Accuracy and Loss graph Perceptron.png")
         plt.show()
 
-
     def main(self):
         print('Reading Data')
         skin_df = self.read_data()
@@ -433,9 +419,9 @@ class DCNN_Model:
         self.model = self.make_model()
         self.fitting_the_model(self.model, x_train, x_val, x_test, y_train, y_val, y_test)
 
-  # ----------------
-  # LOAD MODEL
-  # ----------------
+    # ----------------
+    # LOAD MODEL
+    # ----------------
     def load_model(self):
         self.model = load_model(self.path)
 
@@ -464,7 +450,6 @@ class DCNN_Model:
     def get_external_image(self, url):
         response = requests.get(url)
         return response.content
-
 
     def preprocess_input_image(self, image_path):
         img = Image.open(BytesIO(self.get_external_image(image_path)))
@@ -497,4 +482,3 @@ class DCNN_Model:
         # plt.show()
 
         return augmented_image
-
