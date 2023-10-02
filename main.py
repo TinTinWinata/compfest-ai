@@ -13,8 +13,8 @@ from classification.model import CategoricalMapping, Model
 from classification.parkinson import ParkinsonModel
 from classification.stroke import StrokeModel
 
-# app = Flask(__name__)
-# CORS(app)
+app = Flask(__name__)
+CORS(app)
 #
 #
 # # Create a new Machine Learning Model

@@ -102,9 +102,9 @@ class DCNN_Model:
         features = (features - feature_mean) / feature_std
 
         # Blue starts here
-        plt.imshow((features[0]).astype('uint8'))
-        plt.title("Normalized Image")
-        plt.show()
+        # plt.imshow((features[0]).astype('uint8'))
+        # plt.title("Normalized Image")
+        # plt.show()
 
         # One Hot Encoder
         target = to_categorical(target, num_classes=NUM_CLASSES)
@@ -215,7 +215,8 @@ class DCNN_Model:
     #     x = residual_block(x, filters=64)
     #     x = residual_block(x, filters=64)
     #     x = residual_block(x, filters=64)
-    #
+
+
     #     x = residual_block(x, filters=128, down_sample=True)
     #     x = residual_block(x, filters=128)
     #     x = residual_block(x, filters=128)
@@ -250,12 +251,15 @@ class DCNN_Model:
 
         x = self.residual_block(x, filters=128, down_sample=True)
         x = self.residual_block(x, filters=128)
+        x = Dropout(0.5)
 
         x = self.residual_block(x, filters=256, down_sample=True)
         x = self.residual_block(x, filters=256)
+        x = Dropout(0.5)
 
         x = self.residual_block(x, filters=512, down_sample=True)
         x = self.residual_block(x, filters=512)
+        x = Dropout(0.5)
 
         x = GlobalAveragePooling2D()(x)
         x = Dense(NUM_CLASSES, activation='softmax')(x)
@@ -288,7 +292,6 @@ class DCNN_Model:
         model.compile(optimizer='adam', loss="categorical_crossentropy", metrics=["accuracy"])
 
         model.build(input_shape=(None, *INPUT_SHAPE))
-        print(model.summary())
         return model
 
     def splitting_dataset(self, features, target):
@@ -326,14 +329,15 @@ class DCNN_Model:
                                  subplot_kw={'xticks': [], 'yticks': []},
                                  gridspec_kw=dict(hspace=0.1, wspace=0.1))
 
-        for i, ax in enumerate(axes.flat):
-            ax.imshow(np.clip(np.squeeze(augmented_images[i]), 0, 255), cmap='gray')
+        # for i, ax in enumerate(axes.flat):
+        #     ax.imshow(np.clip(np.squeeze(augmented_images[i]), 0, 255), cmap='gray')
 
-        plt.show()
+        # plt.show()
+        print('Fitting Model ...')
 
         # Fitting the model
         epochs = 80
-        batch_size = 5
+        batch_size = 32
         history = model.fit(datagen.flow(x_train, y_train, batch_size=batch_size),
                             epochs=epochs,
                             validation_data=(x_val, y_val),

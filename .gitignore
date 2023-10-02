@@ -4,3 +4,11 @@ dcnn-dataset/
 archive_7.zip
 upload.zip
 *.zip
+*.pyc
+*.pyc
+classification/__pycache__/stroke.cpython-310.pyc
+classification/__pycache__/parkinson.cpython-310.pyc
+classification/__pycache__/model.cpython-310.pyc
+classification/__pycache__/diabetes.cpython-310.pyc
+classification/__pycache__/dcnn_model.cpython-310.pyc
+classification/__pycache__/ann_model.cpython-310.pyc
