@@ -2,6 +2,7 @@ import os
 from glob import glob
 from io import BytesIO
 
+import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -457,17 +458,16 @@ class DCNN_Model:
 
     def preprocess_input_image(self, image_path):
         img = Image.open(BytesIO(self.get_external_image(image_path)))
-        # img = Image.open(image_path)
-        img = img.resize((100, 75))
-        img = np.asarray(img)  # Convert image to numpy array
-        img = (img - self.mean) / self.std  # Normalize the image
-
+        img = np.array(img.resize((100, 75)))
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        img = cv2.equalizeHist(img)
+        img = np.array(img).astype('float64')
+        img /= 255
+        img = img.reshape(1, 75, 100, 1)
         # # Blue starts here
         # plt.imshow((img).astype('uint8'))
         # plt.title("Normalized Image")
         # plt.show()
-
-        img = img.reshape(1, 75, 100, 3)  # Reshape to match model's input shape
         return img
 
     def datagen_input_image(self, input_image):
