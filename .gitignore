@@ -13,3 +13,4 @@ classification/__pycache__/diabetes.cpython-310.pyc
 classification/__pycache__/dcnn_model.cpython-310.pyc
 classification/__pycache__/ann_model.cpython-310.pyc
 segmentation/dataset_isic18
+segmentation/

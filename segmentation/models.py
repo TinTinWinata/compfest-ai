@@ -1,20 +1,23 @@
 from __future__ import division
-from keras.models import Model
-from keras.layers import Input, concatenate, Conv2D, MaxPooling2D, UpSampling2D, Reshape, core, Dropout
-from keras.optimizers import Adam
-from keras.callbacks import ModelCheckpoint, LearningRateScheduler
-from keras import backend as K
-from keras.utils.vis_utils import plot_model as plot
-from keras.optimizers import SGD
-from keras.optimizers import *
-from keras.layers import *        
-from keras.applications.vgg16 import VGG16
-import keras
 
+import keras
+import keras.layers
+import numpy as np
+from keras import backend as K
+from keras.applications.vgg16 import VGG16
+from keras.callbacks import LearningRateScheduler, ModelCheckpoint
+from keras.layers import *
+from keras.layers import (Conv2D, Dropout, Input, MaxPooling2D, Reshape,
+                          UpSampling2D, concatenate, core)
+from keras.models import Model
+from keras.optimizers import *
+from keras.optimizers import SGD, Adam
+from keras.utils.vis_utils import plot_model as plot
 
 
 def BCDU_net_D3(input_size = (256,256,1)):
     N = input_size[0]
+    print("test")
     inputs = Input(input_size) 
     conv1 = Conv2D(64, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(inputs)
     conv1 = Conv2D(64, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(conv1)
@@ -44,6 +47,8 @@ def BCDU_net_D3(input_size = (256,256,1)):
     up6 = Conv2DTranspose(256, kernel_size=2, strides=2, padding='same',kernel_initializer = 'he_normal')(drop4_3)
     up6 = BatchNormalization(axis=3)(up6)
     up6 = Activation('relu')(up6)
+
+
 
     x1 = Reshape(target_shape=(1, np.int32(N/4), np.int32(N/4), 256))(drop3)
     x2 = Reshape(target_shape=(1, np.int32(N/4), np.int32(N/4), 256))(up6)
@@ -146,6 +151,7 @@ def BCDU_net_D1(input_size = (256,256,1)):
 
        
 def unet(input_size = (256,256,1)):
+    print("A")
     inputs = Input(input_size)
     conv1 = Conv2D(64, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(inputs)
     conv1 = Conv2D(64, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(conv1)
@@ -160,6 +166,8 @@ def unet(input_size = (256,256,1)):
     conv4 = Conv2D(512, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(pool3)
     conv4 = Conv2D(512, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(conv4)
     drop4 = Dropout(0.5)(conv4)
+    print("A")
+
 
     up6 = Conv2D(512, 2, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(UpSampling2D(size = (2,2))(drop4))
     merge6 = concatenate([drop3,up6], axis = 3)
@@ -178,7 +186,7 @@ def unet(input_size = (256,256,1)):
     conv8 = Conv2D(2, 3, activation = 'relu', padding = 'same', kernel_initializer = 'he_normal')(conv8)
     conv9 = Conv2D(1, 1, activation = 'sigmoid')(conv8)
 
-    model = Model(input = inputs, output = conv9)
+    model = Model(inputs = inputs, outputs = conv9)
     
     model.compile(optimizer = Adam(lr = 1e-4), loss = 'binary_crossentropy', metrics = ['accuracy'])
 
