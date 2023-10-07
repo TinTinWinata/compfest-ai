@@ -1,6 +1,6 @@
-Diabetes Prediction DiagnoAI.
+--- Diabetes Prediction ---
 Algorithm : Random Forest Classifier
-Accuracy : 87.37
+Accuracy : 87.29
 Classification_report :               precision    recall  f1-score   support
 
          0.0       0.93      0.81      0.86     31886
@@ -10,5 +10,5 @@ Classification_report :               precision    recall  f1-score   support
    macro avg       0.88      0.87      0.87     63989
 weighted avg       0.88      0.87      0.87     63989
 
-Mean squared error : 0.12633421369297848
-Root mean squared error : 0.35543524542872573
+Mean squared error : 0.12706871493537952
+Root mean squared error : 0.3564669899659427

@@ -3,12 +3,12 @@ Algorithm : Random Forest Classifier
 Accuracy : 82.52
 Classification_report :               precision    recall  f1-score   support
 
-         0.0       0.82      0.79      0.81       113
-         1.0       0.83      0.86      0.84       133
+         0.0       0.82      0.80      0.81       113
+         1.0       0.83      0.85      0.84       133
 
     accuracy                           0.83       246
-   macro avg       0.83      0.82      0.82       246
-weighted avg       0.83      0.83      0.82       246
+   macro avg       0.82      0.82      0.82       246
+weighted avg       0.83      0.83      0.83       246
 
 Mean squared error : 0.17479674796747968
 Root mean squared error : 0.4180870100439377

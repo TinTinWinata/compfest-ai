@@ -11,7 +11,7 @@ import seaborn as sns
 from mlxtend.plotting import plot_confusion_matrix
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import (accuracy_score, classification_report,
-                             confusion_matrix, mean_squared_error)
+                             confusion_matrix, mean_squared_error, roc_auc_score, roc_curve,)
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.utils import resample
@@ -144,6 +144,27 @@ class Model:
         # print('Test : ', np.concatenate((y_pred.reshape(len(y_pred),1), X_test.reshape(len(X_test),len(X_test[0]))),1))
 
         self.classification_report(y_test, predictions)
+        self.createRocAucReport(X_test, y_test)
+
+    def createRocAucReport(self, X_test, Y_test):
+        y_scores = self.model.predict_proba(X_test)[:, 1]  
+
+        roc_auc = roc_auc_score(Y_test, y_scores)
+
+        print("ROC AUC Score:", roc_auc)
+
+        fpr, tpr, thresholds = roc_curve(Y_test, y_scores)
+
+        plt.figure(figsize=(8, 6))
+        plt.plot(fpr, tpr, color='darkorange', lw=2, label='ROC curve (area = {:.2f})'.format(roc_auc))
+        plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
+        plt.xlim([0.0, 1.0])
+        plt.ylim([0.0, 1.05])
+        plt.xlabel('False Positive Rate')
+        plt.ylabel('True Positive Rate')
+        plt.title('Receiver Operating Characteristic (ROC)')
+        plt.legend(loc='lower right')
+        plt.savefig(f'./report/{self.name}_roc_auc.png')
 
     def classification_report(self, y_test, predictions):
         

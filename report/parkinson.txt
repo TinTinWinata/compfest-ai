@@ -1,7 +1,8 @@
 Parkinson Prediction DiagnoAI.
 Algorithm : Support Vector Machine
 Accuracy : 84.62
-Classification_report :               precision    recall  f1-score   support
+Classification_report :               
+                  precision    recall  f1-score   support
 
            0       0.70      0.70      0.70        10
            1       0.90      0.90      0.90        29
