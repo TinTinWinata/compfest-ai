@@ -29,11 +29,7 @@ coronary_categorical = []
 coronary_categorical.append(CategoricalMapping({'Present': 0, 'Absent': 1}, 'famhist'))
 coronary_result = "chd"
 coronary_drop_list = []
-<<<<<<< HEAD
-# coronary_ann_model = ANN_Model(coronary_name, coronary_result, coronary_categorical, coronary_drop_list)
-=======
 coronary_ann_model = ANN_Model(coronary_name, coronary_result, coronary_categorical, coronary_drop_list)
->>>>>>> f9eabe5fa84421a978fb55a0e9dcaefe9bb26142
 coronary_model = Model(coronary_name, coronary_result, coronary_categorical, coronary_drop_list)
 coronary_feature = ['sbp', 'tobacco', 'ldl', 'adiposity',
            'famhist', 'typea', 'obesity', 'alcohol', 'age']
@@ -43,11 +39,7 @@ diabetes_name = 'diabetes'
 diabetes_result = 'Diabetes_binary'
 diabetes_categorical = []
 diabetes_drop_list = ['Education', 'Income']
-<<<<<<< HEAD
-# diabetes_ann_model = ANN_Model(diabetes_name, diabetes_result, diabetes_categorical, diabetes_drop_list)
-=======
 diabetes_ann_model = ANN_Model(diabetes_name, diabetes_result, diabetes_categorical, diabetes_drop_list)
->>>>>>> f9eabe5fa84421a978fb55a0e9dcaefe9bb26142
 diabetes_model = Model(diabetes_name, diabetes_result, diabetes_categorical, diabetes_drop_list)
 diabetes_features = [
     'HighBP',
@@ -82,11 +74,7 @@ stroke_categorical = [
     ]
 stroke_result = 'stroke'
 stroke_drop_list = ['id']
-<<<<<<< HEAD
-# stroke_ann_model = ANN_Model(stroke_name, stroke_result, stroke_categorical, stroke_drop_list)
-=======
 stroke_ann_model = ANN_Model(stroke_name, stroke_result, stroke_categorical, stroke_drop_list)
->>>>>>> f9eabe5fa84421a978fb55a0e9dcaefe9bb26142
 stroke_model = Model(stroke_name, stroke_result, stroke_categorical, stroke_drop_list)
 
 stroke_features = [
@@ -100,14 +88,8 @@ mental_categorical = [
 ]
 mental_drop_list = ['Timestamp', 'Country' , 'state', 'no_employees']
 mental_result = 'treatment'
-<<<<<<< HEAD
-# mental_ann_model = ANN_Model(mental_name, mental_result, mental_categorical , mental_drop_list)
-mental_model = Model(mental_name, mental_result, mental_categorical , mental_drop_list)
-#
-=======
 mental_ann_model = ANN_Model(mental_name, mental_result, mental_categorical , mental_drop_list)
 mental_model = Model(mental_name, mental_result, mental_categorical , mental_drop_list)
->>>>>>> f9eabe5fa84421a978fb55a0e9dcaefe9bb26142
 mental_features = ['Age','Gender','self_employed','family_history','work_interfere','remote_work','tech_company','benefits','care_options','wellness_program','seek_help','anonymity','leave','mental_health_consequence','phys_health_consequence','coworkers','supervisor','mental_health_interview','phys_health_interview','mental_vs_physical','obs_consequence']
 
 # Create a Heart Model
@@ -115,16 +97,12 @@ cardio_name = 'cardio'
 cardio_drop_list = ['id']
 cardio_categorical_list = []
 cardio_result = 'cardio'
-<<<<<<< HEAD
-# cardio_ann_model = ANN_Model(cardio_name, cardio_result, cardio_categorical_list, cardio_drop_list)
-=======
 cardio_ann_model = ANN_Model(cardio_name, cardio_result, cardio_categorical_list, cardio_drop_list)
->>>>>>> f9eabe5fa84421a978fb55a0e9dcaefe9bb26142
 cardio_model = Model(cardio_name, cardio_result, cardio_categorical_list, cardio_drop_list)
 cardio_feature = ['age','gender','height','weight','ap_hi','ap_lo','cholesterol','gluc','smoke','alco','active']
 
 # Create a DCNN Model
-# dcnn_model = DCNN_Model()
+dcnn_model = DCNN_Model()
 # dcnn_model.predict('./test/melanocytic.jpg')
 # dcnn_model.predict('./test/actinic-keratosis.jpg')
 # dcnn_model.predict('./test/dermatofibroma.jpg')
@@ -168,11 +146,7 @@ make_route(f'{diabetes_name}', diabetes_features, diabetes_model)
 make_route(f'{stroke_name}', stroke_features, stroke_model)
 make_route(f'{mental_name}', mental_features, mental_model)
 make_route(f'{cardio_name}', cardio_feature, cardio_model)
-<<<<<<< HEAD
-
-=======
 #
->>>>>>> f9eabe5fa84421a978fb55a0e9dcaefe9bb26142
 # # ANN Model Route List
 make_route(f'{coronary_name}-ann', coronary_feature, coronary_ann_model)
 make_route(f'{diabetes_name}-ann', diabetes_features, diabetes_ann_model)
